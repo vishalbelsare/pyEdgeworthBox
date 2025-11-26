@@ -24,7 +24,7 @@ This example can be calculated like this:
 
 
 ```python
-#!pip install pyEdgeworthBox
+#!uv add pyEdgeworthBox
 %matplotlib inline
 import pyEdgeworthBox as eb
 EB=eb.EdgeBox(  u1 = lambda x,y: x**0.6*y**0.4
@@ -111,7 +111,15 @@ The computation is implemented only for the interior solutions! For "bad" functi
 
 # Install
 
-*pip install pyEdgeworthBox*
+```bash
+uv add pyEdgeworthBox
+```
+
+or with pip:
+
+```bash
+pip install pyEdgeworthBox
+```
 
 # Citation
 ```bibtex

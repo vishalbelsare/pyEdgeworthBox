@@ -12,8 +12,8 @@ VERSION=$(git tag --sort=-creatordate | head -n 1)
 
 echo "Latest tag: $VERSION"
 
-# Update the version in pyproject.toml
-poetry version $VERSION
+# Update the version in pyproject.toml using sed
+sed -i '' "s/^version = .*/version = \"$VERSION\"/" pyproject.toml
 
-# Now run poetry build with verbose output
-poetry build -vvv
+# Now run uv build with verbose output
+uv build -v

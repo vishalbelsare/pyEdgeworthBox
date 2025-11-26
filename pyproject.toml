@@ -1,19 +1,23 @@
-[tool.poetry]
+[project]
 name = "pyEdgeworthBox"
 version = "0.0.0"
 description = "calculate equilibrium, core, pareto effective allocation etc in the pure exchange economy, plot Edgeworth box (microeconomics)"
-authors = ["Maxim Litvak <maxim.litvak@gmail.com>"]
+authors = [{ name = "Maxim Litvak", email = "maxim.litvak@gmail.com" }]
 readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "scipy>=1.11.4",
+    "matplotlib>=3.8.2",
+    "numpy>=1.26.3",
+]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-scipy = "^1.11.4"
-matplotlib = "^3.8.2"
-numpy = "^1.26.3"
-
-[tool.poetry.group.dev.dependencies]
-wheel = "^0.42.0"
+[dependency-groups]
+dev = [
+    "wheel>=0.42.0",
+    "build>=1.0.0",
+    "twine>=5.0.0",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"

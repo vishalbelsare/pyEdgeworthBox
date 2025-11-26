@@ -13,14 +13,14 @@ cache:
   key: "$CI_COMMIT_REF_SLUG"
   paths:
     - .cache/pip
-    - venv/
+    - .venv/
 
 .python-base:
   image: python:3.11.7
   before_script:
     - python -V  # Print out python version for debugging
-    - pip install  --progress-bar off poetry==1.4.2  # Install Poetry
-    - poetry -vvv install --no-root
+    - pip install --progress-bar off uv  # Install uv
+    - uv sync
 
 mypy:
   stage: static
@@ -69,13 +69,13 @@ test:
   stage: test
   extends: .python-base
   script:
-    - poetry run python -m unittest
+    - uv run python -m unittest
 
 build-package:
   stage: build
   extends: .python-base
   script:
-    - poetry run python setup.py sdist bdist_wheel
+    - uv run python -m build
   artifacts:
     paths:
       - dist/*.whl
@@ -97,10 +97,9 @@ release-package:
   only:
     - tags
   script:
-    - pip install twine
-    - python setup.py sdist bdist_wheel
-    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
-    - TWINE_PASSWORD=${PYPI_PASSWORD} TWINE_USERNAME=${PYPI_USERNAME} python -m twine upload --repository pypi dist/* --verbose
+    - uv run python -m build
+    - uv run twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/* -u gitlab-ci-token -p ${CI_JOB_TOKEN}
+    - uv run twine upload --repository pypi dist/* -u ${PYPI_USERNAME} -p ${PYPI_PASSWORD} --verbose
   when: manual
 
 release-docker:
